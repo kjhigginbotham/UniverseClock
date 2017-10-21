@@ -119,3 +119,124 @@ print('Earth: {} sec'.format(elap_E))
 print('Sun: {} sec'.format(elap_S))
 print('GW150914: {} sec'.format(elap_BH))
 print('Gargantua: {} sec'.format(elap_Gar))
+
+# Round seconds down to nearest second
+elap_S = int(elap_S)
+elap_BH = int(elap_BH)
+elap_Gar = int(elap_Gar)
+
+# Grab values from base year for reformulation of date
+baseMonth = base_time[1]
+baseDay = int(base_time[2])
+baseYear = int(base_time[4])
+temp_time = base_time[3].split(":")
+baseHour = int(temp_time[0])
+baseMinute = int(temp_time[1])
+baseSecond = int(temp_time[2])
+
+# Calculate new date function
+def newDate(secs):
+    yearsPassed = int(secs / 31536000)
+    secs = (secs / 31536000) - yearsPassed
+    days = (secs * 365)
+    
+    loopYear = baseYear
+    newYear = baseYear + yearsPassed
+    
+    while loopYear < newYear:
+        if baseYear % 4 == 0:
+            if baseYear % 100 == 0:
+                if baseYear % 400 == 0:
+                    days = days - 1
+                    
+            else:
+                days = days - 1
+    
+        loopYear = loopYear + 1
+    
+    monthDays = [["Jan",31],["Feb",28],["Mar",31],["Apr",30],["May",31],["Jun",30],["Jul",31],["Aug",31],["Sep",30],["Oct",31],["Nov",30],["Dec",31],["Jan",31],["Feb",28],["Mar",31],["Apr",30],["May",31],["Jun",30],["Jul",31],["Aug",31],["Sep",30],["Oct",31],["Nov",30]]
+    month = []
+    for i in range(len(monthDays)):
+        if monthDays[i][0] == baseMonth:
+            month.append(i)
+            
+    monthIndex = month[0]
+    
+    dayCount = 0
+    while dayCount < (days-28):
+        dayCount = dayCount + monthDays[monthIndex][1]
+        
+        monthIndex = monthIndex + 1
+        
+    newMonth = monthDays[monthIndex][0]
+    if monthIndex > 11:
+        newYear = newYear + 1
+
+    extraDays = days - dayCount
+    newDay = int(baseDay + extraDays) 
+    
+    bonusTime = (baseDay + extraDays) - newDay
+    
+    extraHours = bonusTime * 24
+    newHour = baseHour + int(extraHours)
+    
+    bonusTime = extraHours - int(extraHours)
+    newMinute = baseMinute + int(bonusTime * 60)
+    
+    bonusTime = (bonusTime * 60) - int(bonusTime * 60)
+    newSecond = baseSecond + int(bonusTime * 60)
+    
+    '''if newSecond > 60:
+        newSecond = newSecond - 60
+        newMinute = newMinute + 1
+    if newMinute > 60:
+        newMinute = newMinute - 60
+        newHour = newHour + 1
+    if newHour > 24:
+        newHour = newHour - 24
+        newDay = newDay + 1
+    if newDay > monthDays[monthIndex][1]:
+        newDay = newDay - monthDays[monthIndex][1]
+        monthIndex = monthIndex + 1
+        newMonth = monthDays[monthIndex][0]
+    if monthIndex > 10:
+        newYear = newYear + 1'''
+    
+    newDay = str(newDay)
+    newHour = str(newHour)
+    newMinute = str(newMinute)
+    newSecond = str(newSecond)
+    
+    if len(newDay) == 1:
+        newDay = "0" + newDay
+    if len(newHour) == 1:
+        newHour = "0" + newHour
+    if len(newMinute) == 1:
+        newMinute = "0" + newMinute
+    if len(newSecond) == 1:
+        newSecond = "0" + newSecond
+    
+    dateStr = "{0} {1} {2}:{3}:{4} {5}".format(newMonth,newDay,newHour,newMinute,newSecond,newYear)
+    
+    return dateStr
+
+doublecheck = newDate(elap_E)
+date_S = newDate(elap_S)
+date_EH = newDate(elap_BH)
+date_Gar = newDate(elap_Gar)
+
+print(doublecheck)
+print("Original Date: {}".format(base))
+print("Date on Earth: {}".format(start))
+print("Date on the Sun: {}".format(date_S))
+print("Date on GW150914: {}".format(date_EH))
+print("Date on Gargantua: {}".format(date_Gar))
+    
+    
+    
+        
+
+
+
+
+
