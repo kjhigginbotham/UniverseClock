@@ -84,12 +84,25 @@ start_days = monthDictBeg[start_time[1]] + int(start_time[2]) - 1
 elap_E = elap_E + (start_days * 86400)
 
 # Get the start year offset by one year to prevent double counting
-start_year = int(start_time[4]) - 1
+start_year = int(start_time[4])
 
 # Calculate the total number of seconds in the intervening year
-if abs(start_year - base_year) > 2:
-    inter_year = start_year - base_year
-    elap_E = elap_E + (inter_year * 31536000)
+while base_year < start_year:
+    if base_year % 4 == 0:
+        if base_year % 100 == 0:
+            if base_year % 400 == 0:
+                elap_E = elap_E + (366 * 86400)
+                
+            else:
+                elap_E = elap_E + (365 * 86400)
+        
+        else:
+            elap_E = elap_E + (366 * 86400)
+    
+    else:
+        elap_E = elap_E + (365 * 86400)
+        
+    base_year = base_year + 1
 
 tauS_E = taurat(sun_m,sun_r)
 tauBH_E = taurat(GW150914_m,GW150914_r)
