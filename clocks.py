@@ -21,21 +21,34 @@ def taurat(m,r):
 
 # print start time
 start = time.asctime()
-print 'Starting time: %s \n' % start 
+print('Starting time: %s \n' % start)
 
 tauS_E = taurat(sun_m,sun_r)
 tauBH_E = taurat(GW150914_m,GW150914_r)
 tauGar_E = taurat(garg_m,garg_r)
 
 # time elapsed = 10 seconds on Earth
-elap_E = 21
+elap_E = 10
 elap_S = tauS_E*elap_E
 elap_BH = tauBH_E*elap_E
 elap_Gar = tauGar_E*elap_E
 
 # print elapsed times
-print 'Time elapsed on the surface of...'
-print 'Earth: %f sec' % elap_E
-print 'Sun: %f sec' % elap_S
-print 'GW150914: %f sec' % elap_BH
-print 'Gargantua: %f sec' % elap_Gar
+print('Time elapsed on the surface of...')
+print('Earth: %f sec' % elap_E)
+print('Sun: %f sec' % elap_S)
+print('GW150914: %f sec' % elap_BH)
+print('Gargantua: %f sec' % elap_Gar)
+
+t_E = 0
+t_S = 0
+t_BH = 0
+t_Gar = 0
+interval = 0.1
+while t_E < 10:
+	t_E += interval
+	t_S += interval*tauS_E
+	t_BH += interval*tauBH_E
+	t_Gar += interval*tauGar_E
+	print('%f, %f, %f, %f' % (t_E, t_S, t_BH, t_Gar))
+	time.sleep(interval)
