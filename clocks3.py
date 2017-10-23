@@ -268,10 +268,24 @@ def newDate2(secs):
             newDay = newTOY - monthDictBeg[thisMonth]'''
     
     newYear = baseYear + yearsPassed
-    
+    if newDay < 10:
+        newDay = "0" + str(newDay)
+    if newHour < 10:
+        newHour = "0" + str(newHour)
+    if newMinute < 10:
+        newMinute = "0" + str(newMinute)
+    if newSecond < 10:
+        newSecond = "0" + str(newSecond)
     dateStr = "{0} {1} {2}:{3}:{4} {5}".format(thisMonth,newDay,newHour,newMinute,newSecond,newYear)
     
     return dateStr
+
+def newDate3(secs):
+    baseDays = monthDictBeg[baseMonth] + baseDay
+    newSecond = 
+    
+    while secs > 0:
+        newSecond = newSecond + 1
 
 doublecheck = newDate2(elap_E)
 date_S = newDate2(elap_S)
@@ -284,10 +298,12 @@ print("Date on Earth: {}".format(start))
 print("Date on the Sun: {}".format(date_S))
 print("Date on GW150914: {}".format(date_EH))
 print("Date on Gargantua: {}".format(date_Gar))
-    
-    
-    
-        
+
+
+
+
+
+
 
 
 
