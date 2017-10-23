@@ -133,7 +133,7 @@ temp_time = base_time[3].split(":")
 baseHour = int(temp_time[0])
 baseMinute = int(temp_time[1])
 baseSecond = int(temp_time[2])
-
+'''
 # Calculate new date function
 def newDate(secs):
     yearsPassed = int(secs / 31536000)
@@ -186,7 +186,7 @@ def newDate(secs):
     bonusTime = (bonusTime * 60) - int(bonusTime * 60)
     newSecond = baseSecond + int(bonusTime * 60)
     
-    '''if newSecond > 60:
+    if newSecond > 60:
         newSecond = newSecond - 60
         newMinute = newMinute + 1
     if newMinute > 60:
@@ -200,7 +200,7 @@ def newDate(secs):
         monthIndex = monthIndex + 1
         newMonth = monthDays[monthIndex][0]
     if monthIndex > 10:
-        newYear = newYear + 1'''
+        newYear = newYear + 1
     
     newDay = str(newDay)
     newHour = str(newHour)
@@ -218,12 +218,65 @@ def newDate(secs):
     
     dateStr = "{0} {1} {2}:{3}:{4} {5}".format(newMonth,newDay,newHour,newMinute,newSecond,newYear)
     
+    return dateStr'''
+
+def newDate2(secs):
+    yearsPassed = int(secs / 31536000)
+    extra = secs % 31536000
+    daysPast = int(extra / 86400)
+    extra = extra % 86400
+    hoursPast = int(extra / 3600)
+    extra = extra % 3600
+    minutesPast = int(extra / 60)
+    secondsPast = extra % 60
+    
+    newSecond = baseSecond + secondsPast
+    if newSecond > 60:
+        newSecond = newSecond - 60
+        minutesPast = minutesPast + 1
+    
+    newMinute = baseMinute + minutesPast
+    if newMinute > 60:
+        newMinute = newMinute - 60
+        hoursPast = hoursPast + 1
+    
+    newHour = baseHour + hoursPast
+    if newHour > 24:
+        newHour = newHour - 24
+        daysPast = daysPast + 1
+        
+    baseTOY = monthDictBeg[baseMonth] + baseDay
+    newTOY = baseTOY + daysPast
+    if newTOY > 365:
+        newTOY = newTOY - 365
+        yearsPassed = yearsPassed + 1
+    monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    #daysInMonth = {"Jan":31,"Feb",28,"Mar":31,"Apr":30,"May":31,"Jun":30,"Jul":31,"Aug":31,"Sep":30,"Oct":31,"Nov":30,"Dec":31}
+    for i in range(len(monthList)):
+        thisMonth = monthList[i]
+        if i > 0:
+            lastMonth = monthList[i-1]
+        if i == 0:
+            lastMonth = "Jan"
+        
+        if monthDictBeg[thisMonth] < newTOY:
+            pass
+        elif monthDictBeg[thisMonth] > newTOY and monthDictBeg[lastMonth] < newTOY:
+            newDay = newTOY - monthDictBeg[lastMonth]
+        '''else:
+            #newMonth =  thisMonth
+            newDay = newTOY - monthDictBeg[thisMonth]'''
+    
+    newYear = baseYear + yearsPassed
+    
+    dateStr = "{0} {1} {2}:{3}:{4} {5}".format(thisMonth,newDay,newHour,newMinute,newSecond,newYear)
+    
     return dateStr
 
-doublecheck = newDate(elap_E)
-date_S = newDate(elap_S)
-date_EH = newDate(elap_BH)
-date_Gar = newDate(elap_Gar)
+doublecheck = newDate2(elap_E)
+date_S = newDate2(elap_S)
+date_EH = newDate2(elap_BH)
+date_Gar = newDate2(elap_Gar)
 
 print(doublecheck)
 print("Original Date: {}".format(base))
