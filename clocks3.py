@@ -231,23 +231,23 @@ def newDate2(secs):
     secondsPast = extra % 60
     
     newSecond = baseSecond + secondsPast
-    if newSecond > 60:
+    while newSecond > 60:
         newSecond = newSecond - 60
         minutesPast = minutesPast + 1
     
     newMinute = baseMinute + minutesPast
-    if newMinute > 60:
+    while newMinute > 60:
         newMinute = newMinute - 60
         hoursPast = hoursPast + 1
     
     newHour = baseHour + hoursPast
-    if newHour > 24:
+    while newHour > 23:
         newHour = newHour - 24
         daysPast = daysPast + 1
         
     baseTOY = monthDictBeg[baseMonth] + baseDay
     newTOY = baseTOY + daysPast
-    if newTOY > 365:
+    while newTOY > 365:
         newTOY = newTOY - 365
         yearsPassed = yearsPassed + 1
     monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
