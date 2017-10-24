@@ -280,6 +280,7 @@ def newDate2(secs):
     
     return dateStr
 
+# Brute Force Method
 def newDate3(secs):
     newDay = monthDictBeg[baseMonth] + baseDay
     newSecond = baseSecond
