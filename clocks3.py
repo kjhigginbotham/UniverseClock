@@ -281,16 +281,57 @@ def newDate2(secs):
     return dateStr
 
 def newDate3(secs):
-    baseDays = monthDictBeg[baseMonth] + baseDay
-    newSecond = 
+    newDay = monthDictBeg[baseMonth] + baseDay
+    newSecond = baseSecond
+    newMinute = baseMinute
+    newHour = baseHour
+    newYear = baseYear
     
     while secs > 0:
         newSecond = newSecond + 1
+        if newSecond > 60:
+            newSecond = newSecond - 60
+            newMinute = newMinute + 1
+            if newMinute > 60:
+                newMinute = newMinute - 60
+                newHour = newHour + 1
+                if newHour > 23:
+                    newHour = newHour - 24
+                    newDay = newDay + 1
+                    if newDay > 365:
+                        newDay = newDay - 365
+                        newYear = newYear + 1
+        secs = secs - 1
+    
+    monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
+    for i in range(len(monthList)):
+        thisMonth = monthList[i]
+        if i > 0:
+            lastMonth = monthList[i-1]
+        if i == 0:
+            lastMonth = "Jan"
+        
+        if monthDictBeg[thisMonth] < newDay:
+            pass
+        elif monthDictBeg[thisMonth] > newDay and monthDictBeg[lastMonth] < newDay:
+            newDay = newDay - monthDictBeg[lastMonth]
 
-doublecheck = newDate2(elap_E)
-date_S = newDate2(elap_S)
-date_EH = newDate2(elap_BH)
-date_Gar = newDate2(elap_Gar)
+    if newDay < 10:
+        newDay = "0" + str(newDay)
+    if newHour < 10:
+        newHour = "0" + str(newHour)
+    if newMinute < 10:
+        newMinute = "0" + str(newMinute)
+    if newSecond < 10:
+        newSecond = "0" + str(newSecond)
+    dateStr = "{0} {1} {2}:{3}:{4} {5}".format(thisMonth,newDay,newHour,newMinute,newSecond,newYear)
+    
+    return dateStr
+
+doublecheck = newDate3(elap_E)
+date_S = newDate3(elap_S)
+date_EH = newDate3(elap_BH)
+date_Gar = newDate3(elap_Gar)
 
 print(doublecheck)
 print("Original Date: {}".format(base))
