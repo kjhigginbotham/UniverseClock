@@ -27,7 +27,7 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-base = "Fri Nov 25 12:00:00 1915"
+base = "Sun Oct 22 12:00:00 2016"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -329,10 +329,10 @@ def newDate3(secs):
     
     return dateStr
 
-doublecheck = newDate3(elap_E)
-date_S = newDate3(elap_S)
-date_EH = newDate3(elap_BH)
-date_Gar = newDate3(elap_Gar)
+doublecheck = newDate2(elap_E)
+date_S = newDate2(elap_S)
+date_EH = newDate2(elap_BH)
+date_Gar = newDate2(elap_Gar)
 
 print(doublecheck)
 print("Original Date: {}".format(base))
