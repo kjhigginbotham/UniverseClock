@@ -1,7 +1,7 @@
 """
-Created on Fri Oct 13 08:17:00 2017
+Created on Mon Nov 7 20:00:00 2017
 
-@author: Kenny Higginbotham, Adam Kull, and Talha Irfan Khawaja
+@author: Kenny Higginbotham
 """
 
 import time
@@ -33,7 +33,7 @@ def taurat(m,r):
 
 # Find and print base and start time
 base = "Thu Nov 25 12:00:00 1915"
-# base = "Sun Nov 5 12:00:00 2017"
+# base = "Tue Nov 7 23:00:00 2015"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -162,16 +162,15 @@ def calendar(seconds):
     dec_min = dec(dec_hour, hour_sec)*hour_sec
     minutes = dec_min/min_sec
     sec = dec(dec_min, min_sec)*min_sec
-    return (int(year), int(day), int(hour), int(minutes), int(sec))
+    return [int(year), int(day), int(hour), int(minutes), int(sec)]
 
 # calculate calendar time passed one earth
-year_E, day_E, hour_E, min_E, sec_E = calendar(elap_E)
+Etime_list = calendar(elap_E)
 
 # calculate elapsed years, days, hours, minutes, seconds on other locations (including decimals)
-time_list = [year_E, day_E, hour_E, min_E, sec_E]
-decyear_S, decday_S, dechour_S, decmin_S, decsec_S = [tauS_E*i for i in time_list]
-decyear_BH, decday_BH, dechour_BH, decmin_BH, decsec_BH = [tauBH_E*i for i in time_list]
-decyear_Gar, decday_Gar, dechour_Gar, decmin_Gar, decsec_Gar = [tauGar_E*i for i in time_list]
+Sdec_list = [tauS_E*i for i in Etime_list]
+BHdec_list = [tauBH_E*i for i in Etime_list]
+Gardec_list = [tauGar_E*i for i in Etime_list]
 
 # function for calculating the number of leap years
 def leaps(numyears):
@@ -180,38 +179,77 @@ def leaps(numyears):
     while ind <= numyears + orig_year:
         year_list.append(ind)
         ind += 1
-    these_years = 0
+    these_years = len(year_list)*[0]
+    j = 0
     for i in year_list:
         if base_year % 4 == 0:
-            these_years +=1
+            these_years[j] = 1
             if base_year % 100 == 0:
-                these_years -= 1
+                these_years[j] = 0
                 if base_year % 400 == 0:
-                    these_years += 1
-    return these_years
+                    these_years[j] = 1
+        j += 1
+    if these_years[-1] == 1:
+        isLeap = True
+    else:
+        isLeap = False
+    return sum(these_years), isLeap
 
 # function for pushing back decimals in converted times
-def decpush(decyear, decday, dechour, decmin, decsec):
-    numleaps = leaps(int(decyear))
-    dec_dayPerYear = dec(decyear, 1)/decyear
-    dec_day = dec_dayPerYear*(leap_years*Lyear_sec+(decyear-leap_years)*NLyear_sec)
-    decday += dec_day/day_sec
-    dec_hour = dec(decday, day_sec)*day_sec
-    dechour += dechour/hour_sec
-    dec_min = dec(dechour, hour_sec)*hour_sec
-    decmin += decmin/min_sec
-    decsec += dec(decmin, min_sec)*min_sec
-    return(int(decyear), int(decday), int(dechour), int(decmin), int(decsec))
+def decpush(intime):
+    inyear, inday, inhour, inmin, insec = intime
+    year = int(inyear)
+    numLeap, thisLeap = leaps(year)
+    if year != 0:
+        dec_dayPerYear = dec(inyear,1)/year
+        dec_day = dec_dayPerYear*(numLeap*Lyear_sec+(year-numLeap)*NLyear_sec)
+    else:
+        if thisLeap:
+            dec_day = inyear*Lyear_sec
+        else:
+            dec_day = inyear*NLyear_sec
+    newday = inday + dec_day/day_sec
+    day = int(newday)
+    dec_hour = dec(newday, day_sec)*day_sec
+    newhour = inhour + dec_hour/hour_sec
+    hour = int(newhour)
+    dec_min = dec(newhour, hour_sec)*hour_sec
+    newmin = inmin + dec_min/min_sec
+    minutes = int(newmin)
+    dec_sec = dec(newmin, min_sec)*min_sec
+    newsec = insec + dec_sec
+    sec = int(newsec)
+    if 'thisLeap' in locals():
+        if thisLeap:
+            minusdays = 366
+        else:
+            minusdays = 365
+    else:
+        minusdays = 100000
+    while sec >= 60:
+        minutes += 1
+        sec -= 60
+    while minutes >= 60:
+        hour += 1
+        minutes -= 60
+    while hour >= 24:
+        day == 1
+        hour -= 24
+    while day >= minusdays:
+        year += 1
+        day -= minusdays
+    return [year, day, hour, minutes, sec]
+
 
 # calculate elapsed times for other locations
-year_S, day_S, hour_S, min_S, sec_S = decpush(decyear_S, decday_S, dechour_S, decmin_S, decsec_S)
-year_BH, day_BH, hour_BH, min_BH, sec_BH = decpush(decyear_BH, decday_BH, dechour_BH, decmin_BH, decsec_BH)
-year_Gar, day_Gar, hour_Gar, min_Gar, sec_Gar = decpush(decyear_Gar, decday_Gar, dechour_Gar, decmin_Gar, decsec_Gar)
+Stime_list = decpush(Sdec_list)
+BHtime_list = decpush(BHdec_list)
+Gartime_list = decpush(Gardec_list)
 
 # print total times past
 print('\n')
 print('Place\t Years\t Days\t Hours\t Min\t Sec')
-print('Earth\t {}\t {}\t {}\t {}\t {}'.format(year_E, day_E, hour_E, min_E, sec_E))
-print('Sun\t {}\t {}\t {}\t {}\t {}'.format(year_S, day_S, hour_S, min_S, sec_S))
-print('BH\t {}\t {}\t {}\t {}\t {}'.format(year_BH, day_BH, hour_BH, min_BH, sec_BH))
-print('Gar\t {}\t {}\t {}\t {}\t {}'.format(year_Gar, day_Gar, hour_Gar, min_Gar, sec_Gar))
+print('Earth\t {}\t {}\t {}\t {}\t {}'.format(Etime_list[0], Etime_list[1], Etime_list[2], Etime_list[3], Etime_list[4]))
+print('Sun\t {}\t {}\t {}\t {}\t {}'.format(Stime_list[0], Stime_list[1], Stime_list[2], Stime_list[3], Stime_list[4]))
+print('BH\t {}\t {}\t {}\t {}\t {}'.format(BHtime_list[0], BHtime_list[1], BHtime_list[2], BHtime_list[3], BHtime_list[4]))
+print('Gar\t {}\t {}\t {}\t {}\t {}'.format(Gartime_list[0], Gartime_list[1], Gartime_list[2], Gartime_list[3], Gartime_list[4]))
