@@ -32,8 +32,8 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-base = "Thu Nov 25 12:00:00 1915"
-# base = "Tue Nov 7 23:00:00 2015"
+# base = "Thu Nov 25 12:00:00 1915"
+base = "Mon Nov 6 12:00:00 2017"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -210,13 +210,13 @@ def decpush(intime):
             dec_day = inyear*NLyear_sec
     newday = inday + dec_day/day_sec
     day = int(newday)
-    dec_hour = dec(newday, day_sec)*day_sec
+    dec_hour = dec(newday, 1)*day_sec
     newhour = inhour + dec_hour/hour_sec
     hour = int(newhour)
-    dec_min = dec(newhour, hour_sec)*hour_sec
+    dec_min = dec(newhour, 1)*hour_sec
     newmin = inmin + dec_min/min_sec
     minutes = int(newmin)
-    dec_sec = dec(newmin, min_sec)*min_sec
+    dec_sec = dec(newmin, 1)*min_sec
     newsec = insec + dec_sec
     sec = int(newsec)
     if 'thisLeap' in locals():
@@ -233,7 +233,7 @@ def decpush(intime):
         hour += 1
         minutes -= 60
     while hour >= 24:
-        day == 1
+        day += 1
         hour -= 24
     while day >= minusdays:
         year += 1
