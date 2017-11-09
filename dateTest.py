@@ -6,6 +6,7 @@ Created on Mon Nov 7 20:00:00 2017
 
 import time
 import math
+import newConvert
 
 
 # important constants
@@ -32,8 +33,8 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-base = "Thu Nov 25 12:00:00 1915"
-# base = "Tue Nov 7 12:00:00 2017"
+# base = "Thu Nov 25 12:00:00 1915"
+base = "Mon Jun 23 16:45:00 1997"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -198,22 +199,22 @@ def leaps(numyears):
                 if base_year % 400 == 0:
                     these_years[j] = 1
         j += 1
-    if these_years[-1] == 1:
-        isLeap = True
+    if these_years[-2] == 1:
+        isPrevLeap = True
     else:
-        isLeap = False
-    return sum(these_years), isLeap
+        isPrevLeap = False
+    return sum(these_years), isPrevLeap
 
 # function for pushing back decimals in converted times
 def decpush(intime):
     inyear, inday, inhour, inmin, insec = intime
     year = int(inyear)
-    numLeap, thisLeap = leaps(year)
+    numLeap, thisPrevLeap = leaps(year)
     if year != 0:
         dec_dayPerYear = dec(inyear,1)/year
         dec_day = dec_dayPerYear*(numLeap*Lyear_sec+(year-numLeap)*NLyear_sec)
     else:
-        if thisLeap:
+        if thisPrevLeap:
             dec_day = inyear*Lyear_sec
         else:
             dec_day = inyear*NLyear_sec
@@ -228,8 +229,8 @@ def decpush(intime):
     dec_sec = dec(newmin, 1)*min_sec
     newsec = insec + dec_sec
     sec = int(newsec)
-    if 'thisLeap' in locals():
-        if thisLeap:
+    if 'thisPrevLeap' in locals():
+        if thisPrevLeap:
             minusdays = 366
         else:
             minusdays = 365
@@ -302,56 +303,56 @@ def addThatTrash(timeList):
     baseSecond = baseTuple[4]
     
     newSecs = baseSecond + timeSecs
-    if newSecs > 60:
+    if newSecs >= 60:
         newSecs = newSecs - 60
         baseMinute = baseMinute + 1
     
     newMins = baseMinute + timeMins
-    if newMins > 60:
+    if newMins >= 60:
         baseHour = baseHour + 1
         newMins = newMins - 60
     
     newHour = baseHour + timeHours
-    if newHour > 24:
+    if newHour >= 24:
         baseDay = baseDay + 1
         newHour = newHour - 24
     
-    newYear = baseYear
-    while timeYears > 0:
-        newYear = newYear + 1
-        if newYear % 4 == 0:
-            if newYear % 100 == 0:
-                if newYear % 400 == 0:
-                    baseDay = baseDay - 1
-                else:
-                    pass
-            else:
-                baseDay = baseDay - 1
-        else:
-            pass
-        timeYears = timeYears - 1
+    newYear = baseYear + timeYears
+    # while timeYears > 0:
+    #     newYear = newYear + 1
+    #     if newYear % 4 == 0:
+    #         if newYear % 100 == 0:
+    #             if newYear % 400 == 0:
+    #                 baseDay = baseDay - 1
+    #             else:
+    #                 pass
+    #         else:
+    #             baseDay = baseDay - 1
+    #     else:
+    #         pass
+    #     timeYears = timeYears - 1
             
     nextYear = newYear + 1
     thisLeap = leapTest(newYear)
     
     newDay = baseDay + timeDays
     if thisLeap:
-        if newDay > 60:
-            newDay = newDay + 1
+        # if newDay > 60:
+        #     newDay = newDay + 1
             
-        if newDay > 366:
+        if newDay >= 366:
             newDay = newDay - 366
             newYear = nextYear
     else:
-        if newDay > 365:
+        if newDay >= 365:
             newDay = newDay - 365
             newYear = nextYear
     
-    thisLeap = leapTest(newYear)
-    if thisLeap:
-        for i in range(len(monthList)):
-            if i > 1:
-                monthDictBeg[monthList[i]] = monthDictBeg[monthList[i]] + 1
+    # thisLeap = leapTest(newYear)
+    # if thisLeap:
+    #     for i in range(len(monthList)):
+    #         if i > 1:
+    #             monthDictBeg[monthList[i]] = monthDictBeg[monthList[i]] + 1
     
     montharoony = showMeTheMonthy(newDay)
     
@@ -364,10 +365,10 @@ def addThatTrash(timeList):
     return dateStr
 
 # convert time lists to calendar dates and times using convertBack.py
-fin_Etime = addThatTrash(Etime_list)
-fin_Stime = addThatTrash(Stime_list)
-fin_BHtime = addThatTrash(BHtime_list)
-fin_Gartime = addThatTrash(Gartime_list)
+fin_Etime = newConvert.addThatTrash(Etime_list, base)
+fin_Stime = newConvert.addThatTrash(Stime_list, base)
+fin_BHtime = newConvert.addThatTrash(BHtime_list, base)
+fin_Gartime = newConvert.addThatTrash(Gartime_list, base)
 
 # print final times
 print('\n')
