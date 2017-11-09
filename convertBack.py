@@ -12,8 +12,8 @@ base = "Thu Nov 25 12:00:00 1915"
 # base = "Sun Nov 5 12:00:00 2017"
 start = time.asctime()
 
-print("Base time: {}".format(base))
-print("Starting time: {}".format(start))
+# print("Base time: {}".format(base))
+# print("Starting time: {}".format(start))
 
 # Dictionaries of months
 monthDictBeg = {"Jan":0, "Feb":31, "Mar":59, "Apr":90, "May":120, "Jun":151, "Jul":181, "Aug":212, "Sep":243, "Oct":273, "Nov":304, "Dec":334}

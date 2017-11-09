@@ -6,7 +6,6 @@ Created on Mon Nov 7 20:00:00 2017
 
 import time
 import math
-from convertBack import *
 
 
 # important constants
@@ -33,8 +32,8 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-# base = "Thu Nov 25 12:00:00 1915"
-base = "Tue Nov 7 12:00:00 2017"
+base = "Thu Nov 25 12:00:00 1915"
+# base = "Tue Nov 7 12:00:00 2017"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -43,6 +42,7 @@ print("Starting time: {}".format(start))
 # Dictionaries of months
 monthDictBeg = {"Jan":0, "Feb":31, "Mar":59, "Apr":90, "May":120, "Jun":151, "Jul":181, "Aug":212, "Sep":243, "Oct":273, "Nov":304, "Dec":334}
 monthDictEnd = {"Dec":31, "Nov":61, "Oct":92, "Sep":122, "Aug":153, "Jul":184, "Jun":214, "May":245, "Apr":275, "Mar":306, "Feb":334, "Jan":365}
+monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 
 # Split up times for analysis of seconds
 base_time = base.split()
@@ -262,6 +262,102 @@ print('Earth\t {}\t {}\t {}\t {}\t {}'.format(Etime_list[0], Etime_list[1], Etim
 print('Sun\t {}\t {}\t {}\t {}\t {}'.format(Stime_list[0], Stime_list[1], Stime_list[2], Stime_list[3], Stime_list[4]))
 print('BH\t {}\t {}\t {}\t {}\t {}'.format(BHtime_list[0], BHtime_list[1], BHtime_list[2], BHtime_list[3], BHtime_list[4]))
 print('Gar\t {}\t {}\t {}\t {}\t {}'.format(Gartime_list[0], Gartime_list[1], Gartime_list[2], Gartime_list[3], Gartime_list[4]))
+
+# FUNCTIONS FOR CONVERTING BACK TO CALENDAR DATES
+def leapTest(year):
+    if year % 4 == 0:
+        if year % 100 == 0:
+            if year % 400 == 0:
+                return True
+            else:
+                return False
+        else:
+            return True
+    else:
+        return False
+
+def showMeTheMonthy(days):
+    for i in range(len(monthList)):
+        nextDays = monthDictBeg[monthList[i]]
+        if nextDays > days:
+            theMonth = monthList[i-1]
+            newDate = days - monthDictBeg[theMonth]
+            
+            return [theMonth, newDate]
+
+def addThatTrash(timeList):
+    timeYears = timeList[0]
+    timeDays = timeList[1]
+    timeHours = timeList[2]
+    timeMins = timeList[3]
+    timeSecs = timeList[4]
+    global baseTuple
+    baseYear = baseTuple[0]
+    baseDay = baseTuple[1]
+    baseHour = baseTuple[2]
+    baseMinute = baseTuple[3]
+    baseSecond = baseTuple[4]
+    
+    newSecs = baseSecond + timeSecs
+    if newSecs > 60:
+        newSecs = newSecs - 60
+        baseMinute = baseMinute + 1
+    
+    newMins = baseMinute + timeMins
+    if newMins > 60:
+        baseHour = baseHour + 1
+        newMins = newMins - 60
+    
+    newHour = baseHour + timeHours
+    if newHour > 24:
+        baseDay = baseDay + 1
+        newHour = newHour - 24
+    
+    newYear = baseYear
+    while timeYears > 0:
+        newYear = newYear + 1
+        if newYear % 4 == 0:
+            if newYear % 100 == 0:
+                if newYear % 400 == 0:
+                    baseDay = baseDay - 1
+                else:
+                    pass
+            else:
+                baseDay = baseDay - 1
+        else:
+            pass
+        timeYears = timeYears - 1
+            
+    nextYear = newYear + 1
+    thisLeap = leapTest(newYear)
+    
+    newDay = baseDay + timeDays
+    if thisLeap:
+        if newDay > 60:
+            newDay = newDay + 1
+            
+        if newDay > 366:
+            newDay = newDay - 366
+            newYear = nextYear
+    else:
+        if newDay > 365:
+            newDay = newDay - 365
+            newYear = nextYear
+    
+    thisLeap = leapTest(newYear)
+    if thisLeap:
+        for i in range(len(monthList)):
+            if i > 1:
+                monthDictBeg[monthList[i]] = monthDictBeg[monthList[i]] + 1
+    
+    montharoony = showMeTheMonthy(newDay)
+    
+    newMonth = montharoony[0]
+    theDay = montharoony[1]
+    
+    dateStr = "{} {} {}:{}:{} {}".format(newMonth,theDay,newHour,newMins,newSecs,newYear)
+    
+    return dateStr
 
 # convert time lists to calendar dates and times using convertBack.py
 fin_Etime = addThatTrash(Etime_list)
