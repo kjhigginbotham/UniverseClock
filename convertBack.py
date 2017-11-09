@@ -30,6 +30,8 @@ baseDay = monthDictBeg[baseMonth] + int(base_time[2])
 baseHour = int(base_time[3][0] + base_time[3][1])
 baseMinute = int(base_time[3][3] + base_time[3][4])
 baseSecond = int(base_time[3][6] + base_time[3][7])
+baseTuple = (baseYear,baseDay,baseHour,baseMinute,baseSecond)
+
 
 def leapTest(year):
     if year % 4 == 0:
@@ -58,11 +60,12 @@ def addThatTrash(timeList):
     timeHours = timeList[2]
     timeMins = timeList[3]
     timeSecs = timeList[4]
-    global baseSecond
-    global baseMinute
-    global baseHour
-    global baseDay
-    global baseYear
+    global baseTuple
+    baseYear = baseTuple[0]
+    baseDay = baseTuple[1]
+    baseHour = baseTuple[2]
+    baseMinute = baseTuple[3]
+    baseSecond = baseTuple[4]
     
     newSecs = baseSecond + timeSecs
     if newSecs > 60:

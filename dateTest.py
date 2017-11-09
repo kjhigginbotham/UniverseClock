@@ -48,6 +48,14 @@ monthDictEnd = {"Dec":31, "Nov":61, "Oct":92, "Sep":122, "Aug":153, "Jul":184, "
 base_time = base.split()
 start_time = start.split()
 
+baseYear = int(base_time[-1])
+baseMonth = base_time[1]
+baseDay = monthDictBeg[baseMonth] + int(base_time[2])
+baseHour = int(base_time[3][0] + base_time[3][1])
+baseMinute = int(base_time[3][3] + base_time[3][4])
+baseSecond = int(base_time[3][6] + base_time[3][7])
+baseTuple = (baseYear,baseDay,baseHour,baseMinute,baseSecond)
+
 elap_E = 0
 
 # Take base_time and get the rest of the seconds left in the year
