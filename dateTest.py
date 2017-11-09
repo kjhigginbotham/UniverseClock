@@ -288,6 +288,7 @@ def showMeTheMonthy(days):
     return ["Dec",days - monthDictBeg["Dec"]]
 
 def addThatTrash(timeList):
+    monthDictBeg = {"Jan":0, "Feb":31, "Mar":59, "Apr":90, "May":120, "Jun":151, "Jul":181, "Aug":212, "Sep":243, "Oct":273, "Nov":304, "Dec":334}
     timeYears = timeList[0]
     timeDays = timeList[1]
     timeHours = timeList[2]
@@ -358,7 +359,7 @@ def addThatTrash(timeList):
     theDay = montharoony[1]
     
     dateStr = "{} {} {}:{}:{} {}".format(newMonth,theDay,newHour,newMins,newSecs,newYear)
-    monthDictBeg = {"Jan":0, "Feb":31, "Mar":59, "Apr":90, "May":120, "Jun":151, "Jul":181, "Aug":212, "Sep":243, "Oct":273, "Nov":304, "Dec":334}
+    #monthDictBeg = {"Jan":0, "Feb":31, "Mar":59, "Apr":90, "May":120, "Jun":151, "Jul":181, "Aug":212, "Sep":243, "Oct":273, "Nov":304, "Dec":334}
     
     return dateStr
 
