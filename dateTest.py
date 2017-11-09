@@ -6,6 +6,7 @@ Created on Mon Nov 7 20:00:00 2017
 
 import time
 import math
+from convertBack import *
 
 
 # important constants
@@ -33,7 +34,7 @@ def taurat(m,r):
 
 # Find and print base and start time
 # base = "Thu Nov 25 12:00:00 1915"
-base = "Mon Nov 6 12:00:00 2017"
+base = "Tue Nov 7 12:00:00 2017"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -253,3 +254,16 @@ print('Earth\t {}\t {}\t {}\t {}\t {}'.format(Etime_list[0], Etime_list[1], Etim
 print('Sun\t {}\t {}\t {}\t {}\t {}'.format(Stime_list[0], Stime_list[1], Stime_list[2], Stime_list[3], Stime_list[4]))
 print('BH\t {}\t {}\t {}\t {}\t {}'.format(BHtime_list[0], BHtime_list[1], BHtime_list[2], BHtime_list[3], BHtime_list[4]))
 print('Gar\t {}\t {}\t {}\t {}\t {}'.format(Gartime_list[0], Gartime_list[1], Gartime_list[2], Gartime_list[3], Gartime_list[4]))
+
+# convert time lists to calendar dates and times using convertBack.py
+fin_Etime = addThatTrash(Etime_list)
+fin_Stime = addThatTrash(Stime_list)
+fin_BHtime = addThatTrash(BHtime_list)
+fin_Gartime = addThatTrash(Gartime_list)
+
+# print final times
+print('\n')
+print('Earth:\t{}'.format(fin_Etime))
+print('Sun:\t{}'.format(fin_Stime))
+print('BH:\t{}'.format(fin_BHtime))
+print('Gar: \t{}'.format(fin_Gartime))

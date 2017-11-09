@@ -5,6 +5,8 @@ Created on Tue Nov  7 17:30:48 2017
 @author: Adam
 """
 
+import time
+
 # Find and print base and start time
 base = "Thu Nov 25 12:00:00 1915"
 # base = "Sun Nov 5 12:00:00 2017"
@@ -119,7 +121,7 @@ def addThatTrash(timeList):
     newMonth = montharoony[0]
     theDay = montharoony[1]
     
-    dateStr = "{} {} {}:{}:{} {}".format(newMonth,theDay,newHour,newMins,newSecs)
+    dateStr = "{} {} {}:{}:{} {}".format(newMonth,theDay,newHour,newMins,newSecs,newYear)
     
     return dateStr
 
