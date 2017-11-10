@@ -33,8 +33,8 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-# base = "Thu Nov 25 12:00:00 1915"
-base = "Mon Jun 23 16:45:00 1997"
+base = "Thu Nov 25 12:00:00 1915"
+# base = "Wed Oct 9 12:00:00 0012"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -199,10 +199,16 @@ def leaps(numyears):
                 if base_year % 400 == 0:
                     these_years[j] = 1
         j += 1
-    if these_years[-2] == 1:
-        isPrevLeap = True
-    else:
-        isPrevLeap = False
+    if len(these_years) > 1:
+        if these_years[-2] == 1:
+            isPrevLeap = True
+        elif these_years[-2] == 0:
+            isPrevLeap = False
+    elif len(these_years) == 1:
+        if these_years[0] == 1:
+            isPrevLeap = True
+        elif these_years[0] == 0:
+            isPrevLeap = False
     return sum(these_years), isPrevLeap
 
 # function for pushing back decimals in converted times
