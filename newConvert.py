@@ -87,6 +87,13 @@ def addThatTrash(timeList, base):
 	
 	newMonth = montharoony[0]
 	theDay = montharoony[1]
+
+	if len(str(newHours)) == 1:
+		newHours = '0' + str(newHours)
+	if len(str(newMins)) == 1:
+		newMins = '0' + str(newMins)
+	if len(str(newSecs)) == 1:
+		newSecs = '0' + str(newSecs)
 	
 	# create and return new Calendar date
 	dateStr = "{} {} {}:{}:{} {}".format(newMonth,theDay,newHours,newMins,newSecs,newYears)
