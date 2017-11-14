@@ -88,6 +88,11 @@ def addThatTrash(timeList, base):
 	newMonth = montharoony[0]
 	theDay = montharoony[1]
 
+	# prevent day 0
+	if theDay == 0:
+		theDay = 1
+
+	# add 0s to single digit times
 	if len(str(newHours)) == 1:
 		newHours = '0' + str(newHours)
 	if len(str(newMins)) == 1:
