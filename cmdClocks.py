@@ -187,10 +187,33 @@ def calendar(seconds):
 # calculate calendar time passed one earth
 Etime_list = calendar(elap_E)
 
+# function for day correction
+def daycorec(result, begin, end):
+    begmon = begin[1]
+    begday = begin[2]
+    
+    endmon = end[1]
+    endday = end[2]
+
+    begmonpos = monthList.index(begmon)
+    endmonpos = monthList.index(endmon)
+
+    if (begmonpos == endmonpos) & (int(begday) > int(endday)):
+        corday = result[1] + 1
+    elif begmonpos > endmonpos:
+        corday = result[1] + 1
+    else:
+        corday = result[1]
+
+    corDateStr = [result[0],corday,result[2],result[3],result[4]]
+    return corDateStr
+
+corEtime_list = daycorec(Etime_list, base_time, start_time)
+
 # calculate elapsed years, days, hours, minutes, seconds on other locations (including decimals)
-Sdec_list = [tauS_E*i for i in Etime_list]
-BHdec_list = [tauBH_E*i for i in Etime_list]
-Gardec_list = [tauGar_E*i for i in Etime_list]
+Sdec_list = [tauS_E*i for i in corEtime_list]
+BHdec_list = [tauBH_E*i for i in corEtime_list]
+Gardec_list = [tauGar_E*i for i in corEtime_list]
 
 # function for calculating the number of leap years
 def leaps(numyears):
@@ -281,43 +304,14 @@ print('BH\t {}\t {}\t {}\t {}\t {}'.format(BHtime_list[0], BHtime_list[1], BHtim
 print('Gar\t {}\t {}\t {}\t {}\t {}'.format(Gartime_list[0], Gartime_list[1], Gartime_list[2], Gartime_list[3], Gartime_list[4]))
 
 # convert time lists to calendar dates and times using convertBack.py
-fin_Etime = newConvert.addThatTrash(Etime_list, base)
+fin_Etime = newConvert.addThatTrash(corEtime_list, base)
 fin_Stime = newConvert.addThatTrash(Stime_list, base)
 fin_BHtime = newConvert.addThatTrash(BHtime_list, base)
 fin_Gartime = newConvert.addThatTrash(Gartime_list, base)
 
-# function for day correction
-def daycorec(result, begin, end):
-    result = result.split()
-
-    begmon = begin[1]
-    begday = begin[2]
-    
-    endmon = end[1]
-    endday = end[2]
-
-    begmonpos = monthList.index(begmon)
-    endmonpos = monthList.index(endmon)
-
-    if (begmonpos == endmonpos) & (int(begday) > int(endday)):
-        corday = int(result[1]) + 1
-    elif begmonpos > endmonpos:
-        corday = int(result[1]) + 1
-    else:
-        corday = int(result[1])
-
-    corDateStr = "{} {} {} {}".format(result[0],corday,result[2],result[3])
-    return corDateStr
-
-# correct day error
-corFin_Etime = daycorec(fin_Etime, base_time, start_time)
-corFin_Stime = daycorec(fin_Stime, base_time, start_time)
-corFin_BHtime = daycorec(fin_BHtime, base_time, start_time)
-corFin_Gartime = daycorec(fin_Gartime, base_time, start_time)
-
 # print final times
 print('\n')
-print('Earth:\t{}'.format(corFin_Etime))
-print('Sun:\t{}'.format(corFin_Stime))
-print('BH:\t{}'.format(corFin_BHtime))
-print('Gar: \t{}'.format(corFin_Gartime))
+print('Earth:\t{}'.format(fin_Etime))
+print('Sun:\t{}'.format(fin_Stime))
+print('BH:\t{}'.format(fin_BHtime))
+print('Gar: \t{}'.format(fin_Gartime))
