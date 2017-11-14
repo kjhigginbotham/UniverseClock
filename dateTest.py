@@ -1,7 +1,7 @@
 """
 Created on Mon Nov 7 20:00:00 2017
 
-@author: Kenny Higginbotham
+@author: Kenny Higginbotham, Adam Kull
 """
 
 import time
@@ -34,7 +34,7 @@ def taurat(m,r):
 
 # Find and print base and start time
 # base = "Thu Nov 25 12:00:00 1915"
-base = "### Nov 13 12:00:00 0018"
+base = "### Dec 25 12:00:00 0006"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -164,9 +164,15 @@ def dec(num1, num2):
 # function to convert elapsed seconds to elapsed years, days, etc
 def calendar(seconds):
     year = ((seconds-leap_years*Lyear_sec)/NLyear_sec)+leap_years
-    dec_dayPerYear = dec(year, 1)/year
-    dec_day = dec_dayPerYear*(leap_years*Lyear_sec+(year-leap_years)*NLyear_sec)
-    day = dec_day/day_sec
+    # dec_dayPerYear = dec(year, 1)/year
+    # dec_day = dec_dayPerYear*(leap_years*Lyear_sec+(year-leap_years)*NLyear_sec)
+    # day = dec_day/day_sec
+    if newConvert.leapTest(start_year):
+        dec_day = dec(year, 1)*Lyear_sec
+        day = dec_day/day_sec
+    else:
+        dec_day = dec(year, 1)*NLyear_sec
+        day = dec_day/day_sec
     dec_hour = dec(dec_day, day_sec)*day_sec
     hour = dec_hour/hour_sec
     dec_min = dec(dec_hour, hour_sec)*hour_sec
