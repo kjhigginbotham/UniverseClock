@@ -35,6 +35,7 @@ def taurat(m,r):
 # take input for base time
 parser = argparse.ArgumentParser()
 parser.add_argument("input_date", help='Input date to start clocks from. Format example: "Thu Nov 25 12:00:00 1915"', type=str)
+parser.add_argument("runtime", help='Duration of clocks in seconds', type=str)
 args = parser.parse_args()
 
 # Find and print base and start time
@@ -315,3 +316,35 @@ print('Earth:\t{}'.format(fin_Etime))
 print('Sun:\t{}'.format(fin_Stime))
 print('BH:\t{}'.format(fin_BHtime))
 print('Gar: \t{}'.format(fin_Gartime))
+
+# split final times
+clk_E = fin_Etime.split()
+clk_Ehr, clk_Emn, clk_Esc = clk_E[2].split(':')
+clk_S = fin_Stime.split()
+clk_Shr, clk_Smn, clk_Ssc = clk_S[2].split(':')
+clk_BH = fin_BHtime.split()
+clk_BHhr, clk_BHmn, clk_BHsc = clk_BH[2].split(':')
+clk_Gar = fin_Gartime.split()
+clk_Garhr, clk_Garmn, clk_Garsc = clk_Gar[2].split(':')
+
+# run clocks
+runtime = args.runtime
+ticker = 0
+while ticker <= runtime:
+	# increase seconds by 1 and push over
+	clk_Esc +=1
+	if clk_Esc >= 60:
+		clk_Esc -= 60
+		clk_Emn += 1
+	if clk_Emn <= 60:
+		clk_Emn -= 60
+		clk_Ehr += 1
+	if clk_Ehr >= 24:
+		clk_Ehr -= 24
+		clk_E[1] += 1
+	if newConvert.leapTest()
+		if clk_E[1] >= 
+
+	# increase ticker and wait
+	ticker += 1
+	time.sleep(1)
