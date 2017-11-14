@@ -33,8 +33,9 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-# base = "Thu Nov 25 12:00:00 1915"
-base = "### Dec 25 12:00:00 0006"
+base = "Thu Nov 25 12:00:00 1915"
+# base = "### Dec 1 12:00:00 0007"
+# base = "### Jan 1 12:00:00 -4599997983"
 start = time.asctime()
 
 print("Base time: {}".format(base))
@@ -282,9 +283,38 @@ fin_Stime = newConvert.addThatTrash(Stime_list, base)
 fin_BHtime = newConvert.addThatTrash(BHtime_list, base)
 fin_Gartime = newConvert.addThatTrash(Gartime_list, base)
 
+# function for day correction
+def daycorec(result, begin, end):
+    result = result.split()
+
+    begmon = begin[1]
+    begday = begin[2]
+    
+    endmon = end[1]
+    endday = end[2]
+
+    begmonpos = monthList.index(begmon)
+    endmonpos = monthList.index(endmon)
+
+    if (begmonpos == endmonpos) & (int(begday) > int(endday)):
+        corday = int(result[1]) + 1
+    elif begmonpos > endmonpos:
+        corday = int(result[1]) + 1
+    else:
+        corday = int(result[1])
+
+    corDateStr = "{} {} {} {}".format(result[0],corday,result[2],result[3])
+    return corDateStr
+
+# correct day error
+corFin_Etime = daycorec(fin_Etime, base_time, start_time)
+corFin_Stime = daycorec(fin_Stime, base_time, start_time)
+corFin_BHtime = daycorec(fin_BHtime, base_time, start_time)
+corFin_Gartime = daycorec(fin_Gartime, base_time, start_time)
+
 # print final times
 print('\n')
-print('Earth:\t{}'.format(fin_Etime))
-print('Sun:\t{}'.format(fin_Stime))
-print('BH:\t{}'.format(fin_BHtime))
-print('Gar: \t{}'.format(fin_Gartime))
+print('Earth:\t{}'.format(corFin_Etime))
+print('Sun:\t{}'.format(corFin_Stime))
+print('BH:\t{}'.format(corFin_BHtime))
+print('Gar: \t{}'.format(corFin_Gartime))
