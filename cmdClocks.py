@@ -317,6 +317,22 @@ print('Sun:\t{}'.format(fin_Stime))
 print('BH:\t{}'.format(fin_BHtime))
 print('Gar: \t{}'.format(fin_Gartime))
 
+def rollCheck(dateStr):
+    secs = int(dateStr[13] + dateStr[14])
+    mins = int(dateStr[10] + dateStr[11])
+    hours = int(dateStr[7] + dateStr[8])
+    days = 
+
+secRunSun = round(1 / tauS_E, 1)
+secRunBH = round(1 / tauBH_E, 1)
+secRunGar = round(1 / tauGar_E, 1)
+ticker = 0
+runtime = args.runtime
+while ticker <= runtime:
+    if ticker % 1 == 0 or ticker % secRunSun == 0 or ticker % secRunBH == 0 or ticker % secRunGar == 0:
+        if ticker % 1
+
+'''
 # split final times
 clk_E = fin_Etime.split()
 clk_Ehr, clk_Emn, clk_Esc = clk_E[2].split(':')
@@ -342,9 +358,10 @@ while ticker <= runtime:
 	if clk_Ehr >= 24:
 		clk_Ehr -= 24
 		clk_E[1] += 1
-	if newConvert.leapTest()
+	if newConvert.leapTest():
 		if clk_E[1] >= 
 
 	# increase ticker and wait
-	ticker += 1
-	time.sleep(1)
+	ticker += .1
+	time.sleep(.1)
+'''

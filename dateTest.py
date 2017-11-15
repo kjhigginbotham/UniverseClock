@@ -33,7 +33,7 @@ def taurat(m,r):
     return math.sqrt((1-(2*G*m)/(r*c**2))/(1-(2*G*earth_m)/(earth_r*c**2)))
 
 # Find and print base and start time
-base = "Thu Nov 25 12:00:00 1915"
+base = "Thu May 17 09:30:00 1792"
 # base = "### Dec 1 12:00:00 0007"
 # base = "### Jan 1 12:00:00 -4599997983"
 start = time.asctime()
