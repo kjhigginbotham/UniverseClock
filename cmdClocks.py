@@ -328,23 +328,23 @@ clk_Gar = fin_Gartime.split()
 clk_Garhr, clk_Garmn, clk_Garsc = clk_Gar[2].split(':')
 
 # run clocks
-runtime = args.runtime
-ticker = 0
-while ticker <= runtime:
-	# increase seconds by 1 and push over
-	clk_Esc +=1
-	if clk_Esc >= 60:
-		clk_Esc -= 60
-		clk_Emn += 1
-	if clk_Emn <= 60:
-		clk_Emn -= 60
-		clk_Ehr += 1
-	if clk_Ehr >= 24:
-		clk_Ehr -= 24
-		clk_E[1] += 1
-	if newConvert.leapTest()
-		if clk_E[1] >= 
+# runtime = args.runtime
+# ticker = 0
+# while ticker <= runtime:
+# 	# increase seconds by 1 and push over
+# 	clk_Esc +=1
+# 	if clk_Esc >= 60:
+# 		clk_Esc -= 60
+# 		clk_Emn += 1
+# 	if clk_Emn <= 60:
+# 		clk_Emn -= 60
+# 		clk_Ehr += 1
+# 	if clk_Ehr >= 24:
+# 		clk_Ehr -= 24
+# 		clk_E[1] += 1
+# 	if newConvert.leapTest()
+# 		if clk_E[1] >= 
 
-	# increase ticker and wait
-	ticker += 1
-	time.sleep(1)
+# 	# increase ticker and wait
+# 	ticker += 1
+# 	time.sleep(1)
