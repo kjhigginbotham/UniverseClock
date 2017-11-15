@@ -316,7 +316,7 @@ print('Earth:\t{}'.format(fin_Etime))
 print('Sun:\t{}'.format(fin_Stime))
 print('BH:\t{}'.format(fin_BHtime))
 print('Gar: \t{}'.format(fin_Gartime))
-
+'''
 def rollCheck(dateStr):
     secs = int(dateStr[13] + dateStr[14])
     mins = int(dateStr[10] + dateStr[11])
@@ -331,7 +331,7 @@ runtime = args.runtime
 while ticker <= runtime:
     if ticker % 1 == 0 or ticker % secRunSun == 0 or ticker % secRunBH == 0 or ticker % secRunGar == 0:
         if ticker % 1
-
+'''
 '''
 # split final times
 clk_E = fin_Etime.split()
