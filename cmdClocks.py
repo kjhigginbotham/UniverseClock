@@ -49,6 +49,7 @@ start = time.asctime()
 print('\n')
 print("Base time: {}".format(base))
 print("Starting time: {}".format(start))
+print('\n')
 
 # Dictionaries of months
 monthDictBeg = {"Jan":0, "Feb":31, "Mar":59, "Apr":90, "May":120, "Jun":151, "Jul":181, "Aug":212, "Sep":243, "Oct":273, "Nov":304, "Dec":334}
@@ -417,8 +418,8 @@ clock_NGC = sepClocks(fin_NGCtime)
 
 # print clock headers
 print('\n')
-print('Earth\t\t\tSun  \t\t\tPSR  \t\t\tBH   \t\t\tGar  \t\t\tNGC 1277')
-print('-------------------------------------------------------------------------------------------------------------------------------------------')
+print('Earth\t\t\tSun  \t\t\tPSR B1919+21\t\tGW150914\t\tGargantua\t\tNGC 1277')
+print('--------------------------------------------------------------------------------------------------------------------------------------------')
 
 # run clocks
 runtime = int(args.runtime)
