@@ -23,10 +23,14 @@ earth_m = 5.972*10**24
 earth_r = 6.371*10**6
 sun_m = 1.989*10**30
 sun_r = 695.7*10**6
+psr_m = 1.4*sun_m
+psr_r = 10*1.4*10**(-6)*sun_r
 GW150914_m = 62.0*sun_m
 GW150914_r = 199.0*10**3
 garg_m = 100.0*10**6*sun_m
 garg_r = 300.0*10**9
+ngc1277_m = 1.7*10**10*sun_m
+ngc1277_r = 5.011839*10**13
 
 # tau ratio function
 def taurat(m,r):
@@ -42,6 +46,7 @@ args = parser.parse_args()
 base = args.input_date
 start = time.asctime()
 
+print('\n')
 print("Base time: {}".format(base))
 print("Starting time: {}".format(start))
 
@@ -144,20 +149,26 @@ while base_year < start_year:
     base_year = base_year + 1
 
 tauS_E = taurat(sun_m,sun_r)
+tauPSR_E = taurat(psr_m,psr_r)
 tauBH_E = taurat(GW150914_m,GW150914_r)
 tauGar_E = taurat(garg_m,garg_r)
+tauNGC_E = taurat(ngc1277_m,ngc1277_r)
 
 # time elapsed since base date, seconds on Earth
 elap_S = tauS_E*elap_E
+elap_PSR = tauPSR_E*elap_E
 elap_BH = tauBH_E*elap_E
 elap_Gar = tauGar_E*elap_E
+elap_NGC = tauNGC_E*elap_E
 
 # print elapsed times
 print('Time elapsed on the surface of...')
 print('Earth: {} sec'.format(elap_E))
 print('Sun: {} sec'.format(elap_S))
+print('PSR B1919+21: {} sec'.format(elap_PSR))
 print('GW150914: {} sec'.format(elap_BH))
 print('Gargantua: {} sec'.format(elap_Gar))
+print('NGC 1277: {} sec'.format(elap_NGC))
 
 # floor seconds
 elap_E = int(elap_E)
@@ -213,8 +224,10 @@ corEtime_list = daycorec(Etime_list, base_time, start_time)
 
 # calculate elapsed years, days, hours, minutes, seconds on other locations (including decimals)
 Sdec_list = [tauS_E*i for i in corEtime_list]
+PSRdec_list = [tauPSR_E*i for i in corEtime_list]
 BHdec_list = [tauBH_E*i for i in corEtime_list]
 Gardec_list = [tauGar_E*i for i in corEtime_list]
+NGCdec_list = [tauNGC_E*i for i in corEtime_list]
 
 # function for calculating the number of leap years
 def leaps(numyears):
@@ -293,29 +306,37 @@ def decpush(intime):
 
 # calculate elapsed times for other locations
 Stime_list = decpush(Sdec_list)
+PSRtime_list = decpush(PSRdec_list)
 BHtime_list = decpush(BHdec_list)
 Gartime_list = decpush(Gardec_list)
+NGCtime_list = decpush(NGCdec_list)
 
 # print total times past
 print('\n')
 print('Place\t Years\t Days\t Hours\t Min\t Sec')
 print('Earth\t {}\t {}\t {}\t {}\t {}'.format(Etime_list[0], Etime_list[1], Etime_list[2], Etime_list[3], Etime_list[4]))
 print('Sun\t {}\t {}\t {}\t {}\t {}'.format(Stime_list[0], Stime_list[1], Stime_list[2], Stime_list[3], Stime_list[4]))
+print('PSR\t {}\t {}\t {}\t {}\t {}'.format(PSRtime_list[0], PSRtime_list[1], PSRtime_list[2], PSRtime_list[3], PSRtime_list[4]))
 print('BH\t {}\t {}\t {}\t {}\t {}'.format(BHtime_list[0], BHtime_list[1], BHtime_list[2], BHtime_list[3], BHtime_list[4]))
 print('Gar\t {}\t {}\t {}\t {}\t {}'.format(Gartime_list[0], Gartime_list[1], Gartime_list[2], Gartime_list[3], Gartime_list[4]))
+print('NGC\t {}\t {}\t {}\t {}\t {}'.format(NGCtime_list[0], NGCtime_list[1], NGCtime_list[2], NGCtime_list[3], NGCtime_list[4]))
 
 # convert time lists to calendar dates and times using convertBack.py
 fin_Etime = newConvert.addThatTrash(corEtime_list, base)
 fin_Stime = newConvert.addThatTrash(Stime_list, base)
+fin_PSRtime = newConvert.addThatTrash(PSRtime_list, base)
 fin_BHtime = newConvert.addThatTrash(BHtime_list, base)
 fin_Gartime = newConvert.addThatTrash(Gartime_list, base)
+fin_NGCtime = newConvert.addThatTrash(NGCtime_list, base)
 
 # print final times
 print('\n')
 print('Earth:\t{}'.format(fin_Etime))
 print('Sun:\t{}'.format(fin_Stime))
+print('PSR:\t{}'.format(fin_PSRtime))
 print('BH:\t{}'.format(fin_BHtime))
 print('Gar: \t{}'.format(fin_Gartime))
+print('NGC: \t{}'.format(fin_NGCtime))
 
 # seperate clocks function
 def sepClocks(intime):
@@ -389,13 +410,15 @@ def printClocks(advanList):
 # assign final times to new variables
 clock_E = sepClocks(fin_Etime)
 clock_S = sepClocks(fin_Stime)
+clock_PSR = sepClocks(fin_PSRtime)
 clock_BH = sepClocks(fin_BHtime)
 clock_Gar = sepClocks(fin_Gartime)
+clock_NGC = sepClocks(fin_NGCtime)
 
 # print clock headers
 print('\n')
-print('Earth\t\t\tSun  \t\t\tBH   \t\t\tGar  ')
-print('--------------------------------------------------------------------------------------------')
+print('Earth\t\t\tSun  \t\t\tPSR  \t\t\tBH   \t\t\tGar  \t\t\tNGC 1277')
+print('-------------------------------------------------------------------------------------------------------------------------------------------')
 
 # run clocks
 runtime = int(args.runtime)
@@ -406,13 +429,17 @@ while ticker <= runtime:
     prnt_E = printClocks(clock_E)
     clock_S = runClocks(clock_S, tauS_E)
     prnt_S = printClocks(clock_S)
+    clock_PSR = runClocks(clock_PSR, tauGar_E)
+    prnt_PSR = printClocks(clock_PSR)
     clock_BH = runClocks(clock_BH, tauBH_E)
     prnt_BH = printClocks(clock_BH)
     clock_Gar = runClocks(clock_Gar, tauGar_E)
     prnt_Gar = printClocks(clock_Gar)
+    clock_NGC = runClocks(clock_NGC, tauGar_E)
+    prnt_NGC = printClocks(clock_NGC)
 
     # print new times
-    print('{}\t{}\t{}\t{}'.format(prnt_E, prnt_S, prnt_BH, prnt_Gar))
+    print('{}\t{}\t{}\t{}\t{}\t{}'.format(prnt_E, prnt_S, prnt_PSR, prnt_BH, prnt_Gar, prnt_NGC))
 
     # increase ticker and pause one second
     ticker += 1
