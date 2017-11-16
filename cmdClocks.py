@@ -316,52 +316,104 @@ print('Earth:\t{}'.format(fin_Etime))
 print('Sun:\t{}'.format(fin_Stime))
 print('BH:\t{}'.format(fin_BHtime))
 print('Gar: \t{}'.format(fin_Gartime))
-'''
-def rollCheck(dateStr):
-    secs = int(dateStr[13] + dateStr[14])
-    mins = int(dateStr[10] + dateStr[11])
-    hours = int(dateStr[7] + dateStr[8])
-    days = 
 
-secRunSun = round(1 / tauS_E, 1)
-secRunBH = round(1 / tauBH_E, 1)
-secRunGar = round(1 / tauGar_E, 1)
-ticker = 0
-runtime = args.runtime
-while ticker <= runtime:
-    if ticker % 1 == 0 or ticker % secRunSun == 0 or ticker % secRunBH == 0 or ticker % secRunGar == 0:
-        if ticker % 1
-'''
-'''
-# split final times
-clk_E = fin_Etime.split()
-clk_Ehr, clk_Emn, clk_Esc = clk_E[2].split(':')
-clk_S = fin_Stime.split()
-clk_Shr, clk_Smn, clk_Ssc = clk_S[2].split(':')
-clk_BH = fin_BHtime.split()
-clk_BHhr, clk_BHmn, clk_BHsc = clk_BH[2].split(':')
-clk_Gar = fin_Gartime.split()
-clk_Garhr, clk_Garmn, clk_Garsc = clk_Gar[2].split(':')
+# seperate clocks function
+def sepClocks(intime):
+    # get values from time string
+    month, day, time, year = intime.split()
+    clk_hr, clk_mn, clk_sc = time.split(':') 
+    day, clk_hr, clk_mn, clk_sc, year = list(map(int,[day, clk_hr, clk_mn, clk_sc, year]))
+    monthpos = monthList.index(month)
+
+    sepList = [monthpos, day, clk_hr, clk_mn, clk_sc, year]
+    return sepList
+
+# run clocks function
+def runClocks(sepList, taurat):
+    # seperate out variables from list
+    monthpos, day, clk_hr, clk_mn, clk_sc, year = sepList
+
+    # list of number of days in each month
+    dayInMon = [31, 28,  31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+    if newConvert.leapTest(year):
+        dayInMon[1] = dayInMon[1] + 1
+
+    # increase seconds by 1 and push over
+    clk_sc += 1*taurat
+    while clk_sc >= 60:
+        clk_sc -= 60
+        clk_mn += 1
+    while clk_mn >= 60:
+        clk_mn -= 60
+        clk_hr += 1
+    while clk_hr >= 24:
+        clk_hr -= 24
+        day += 1
+    while day >= dayInMon[monthpos]:
+        day -= dayInMon[monthpos]
+        monthpos += 1
+    while monthpos >= 12:
+        monthpos -= 1
+        year += 1
+
+    advanList = [monthpos, day, clk_hr, clk_mn, clk_sc, year]
+    return advanList
+
+# print clocks function
+def printClocks(advanList):
+    # seperate out variables from list
+    monthpos, day, clk_hr, clk_mn, clk_sc, year = advanList
+
+    # int times
+    clk_hr, clk_mn, clk_sc = list(map(int, [clk_hr, clk_mn, clk_sc]))
+
+    # add 0s to single digit times
+    if len(str(clk_hr)) == 1:
+        clk_hr = '0' + str(clk_hr)
+    else:
+        clk_hr = str(clk_hr)
+    if len(str(clk_mn)) == 1:
+        clk_mn = '0' + str(clk_mn)
+    else:
+        clk_mn = str(clk_mn)
+    if len(str(clk_sc)) == 1:
+        clk_sc = '0' + str(clk_sc)
+    else:
+        clk_sc = str(clk_sc)
+
+    newmonth = monthList[monthpos]
+    newtime = ':'.join((clk_hr, clk_mn, clk_sc))
+    advanced = ' '.join((newmonth, str(int(day)), newtime, str(int(year))))
+    return advanced
+
+# assign final times to new variables
+clock_E = sepClocks(fin_Etime)
+clock_S = sepClocks(fin_Stime)
+clock_BH = sepClocks(fin_BHtime)
+clock_Gar = sepClocks(fin_Gartime)
+
+# print clock headers
+print('\n')
+print('Earth\t\t\tSun  \t\t\tBH   \t\t\tGar  ')
+print('--------------------------------------------------------------------------------------------')
 
 # run clocks
-runtime = args.runtime
+runtime = int(args.runtime)
 ticker = 0
 while ticker <= runtime:
-	# increase seconds by 1 and push over
-	clk_Esc +=1
-	if clk_Esc >= 60:
-		clk_Esc -= 60
-		clk_Emn += 1
-	if clk_Emn <= 60:
-		clk_Emn -= 60
-		clk_Ehr += 1
-	if clk_Ehr >= 24:
-		clk_Ehr -= 24
-		clk_E[1] += 1
-	if newConvert.leapTest():
-		if clk_E[1] >= 
+    # advance the clocks
+    clock_E = runClocks(clock_E, 1)
+    prnt_E = printClocks(clock_E)
+    clock_S = runClocks(clock_S, tauS_E)
+    prnt_S = printClocks(clock_S)
+    clock_BH = runClocks(clock_BH, tauBH_E)
+    prnt_BH = printClocks(clock_BH)
+    clock_Gar = runClocks(clock_Gar, tauGar_E)
+    prnt_Gar = printClocks(clock_Gar)
 
-	# increase ticker and wait
-	ticker += .1
-	time.sleep(.1)
-'''
+    # print new times
+    print('{}\t{}\t{}\t{}'.format(prnt_E, prnt_S, prnt_BH, prnt_Gar))
+
+    # increase ticker and pause one second
+    ticker += 1
+    time.sleep(1)
