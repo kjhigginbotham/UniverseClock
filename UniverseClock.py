@@ -490,11 +490,6 @@ clock_BH = sepClocks(fin_BHtime)
 clock_Gar = sepClocks(fin_Gartime)
 clock_NGC = sepClocks(fin_NGCtime)
 
-# print clock headers
-print('\n')
-print('Earth\t\t\tSun  \t\t\tPSR B1919+21\t\tGW150914\t\tGargantua\t\tNGC 1277')
-print('--------------------------------------------------------------------------------------------------------------------------------------------')
-
 # MORE UI STUFF
 # FOR THE LOVE OF GOD DON'T CHANGE ANY NAMES
 
