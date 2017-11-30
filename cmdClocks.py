@@ -371,8 +371,9 @@ def runClocks(sepList, taurat):
     while clk_hr >= 24:
         clk_hr -= 24
         day += 1
-    while day >= dayInMon[monthpos]:
+    while day > dayInMon[monthpos]:
         day -= dayInMon[monthpos]
+        day += 1
         monthpos += 1
     while monthpos >= 12:
         monthpos -= 1
@@ -430,13 +431,13 @@ while ticker <= runtime:
     prnt_E = printClocks(clock_E)
     clock_S = runClocks(clock_S, tauS_E)
     prnt_S = printClocks(clock_S)
-    clock_PSR = runClocks(clock_PSR, tauGar_E)
+    clock_PSR = runClocks(clock_PSR, tauPSR_E)
     prnt_PSR = printClocks(clock_PSR)
     clock_BH = runClocks(clock_BH, tauBH_E)
     prnt_BH = printClocks(clock_BH)
     clock_Gar = runClocks(clock_Gar, tauGar_E)
     prnt_Gar = printClocks(clock_Gar)
-    clock_NGC = runClocks(clock_NGC, tauGar_E)
+    clock_NGC = runClocks(clock_NGC, tauNGC_E)
     prnt_NGC = printClocks(clock_NGC)
 
     # print new times
