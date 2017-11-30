@@ -22,7 +22,7 @@ def showMeTheMonthy(days):
 	monthList = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"]
 	for i in range(len(monthList)):
 		nextDays = monthDictBeg[monthList[i]]
-		if nextDays > days:
+		if nextDays >= days:
 			theMonth = monthList[i-1]
 			newDate = days - monthDictBeg[theMonth]
 			

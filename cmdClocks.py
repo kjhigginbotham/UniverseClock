@@ -376,7 +376,7 @@ def runClocks(sepList, taurat):
         day += 1
         monthpos += 1
     while monthpos >= 12:
-        monthpos -= 1
+        monthpos = 0
         year += 1
 
     advanList = [monthpos, day, clk_hr, clk_mn, clk_sc, year]
